@@ -24,7 +24,8 @@ pipeline {
                 }
             }
         }
-		steps {
+		stage ('deploy') {
+			steps {
                 // Use the rtMavenRun step to deploy artifacts to Artifactory
                 rtMavenRun(
                     tool: 'mvn_2',
@@ -33,6 +34,7 @@ pipeline {
                     goals: 'deploy'
                 )
             }
+		}
         stage('Publishtheartifacts'){
             steps{
                 rtPublishBuildInfo (
