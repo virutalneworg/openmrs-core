@@ -9,7 +9,7 @@ pipeline {
         stage('artifactory'){
             steps{
                 rtMavenDeployer (
-                    id: "MAVEN_DEPLOYER" ,
+                    id: "openmrs_dep" ,
                     serverId: 'jfrog_instance',
                     releaseRepo: 'libs-release-local',
                     snapshotRepo: 'libs-snapshot-local',
@@ -24,6 +24,15 @@ pipeline {
                 }
             }
         }
+		steps {
+                // Use the rtMavenRun step to deploy artifacts to Artifactory
+                rtMavenRun(
+                    tool: 'mvn_2',
+                    deployerId: 'jfrog_instance',
+                    pom: 'pom.xml',
+                    goals: 'deploy'
+                )
+            }
         stage('Publishtheartifacts'){
             steps{
                 rtPublishBuildInfo (
